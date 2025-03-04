@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Room_Practica</string>
+    <string name="add">Añadir</string>
+    <string name="buscar">Buscar</string>
+    <string name="contactos">Contactos</string>
+    <string name="nombreContacto">nombreContacto</string>
+    <string name="telefonoContacto">telefonoContacto</string>
+    <string name="titulo_de_la_app">Titulo de la app</string>
+    <string name="volver">Volver</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar Contacto</string>
+    <string name="imagen_del_contacto_seleccionado">Imagen del contacto seleccionado</string>
 </resources>
