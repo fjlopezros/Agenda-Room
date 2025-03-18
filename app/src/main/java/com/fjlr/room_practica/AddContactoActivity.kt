@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.room.Room
 import com.fjlr.room_practica.databinding.ActivityAddContactoBinding
 
 class AddContactoActivity : AppCompatActivity() {
@@ -37,11 +36,7 @@ class AddContactoActivity : AppCompatActivity() {
 
             if (nombre.isNotEmpty() && telefono.isNotEmpty()) {
                 // Obtener una instancia de la base de datos y el DAO
-                val db = Room.databaseBuilder(
-                    applicationContext,
-                    AppDataBase::class.java, "contactos_db"
-                ).build()
-
+                val db = DatabaseSingleton.getDatabase(this)
                 val contactoDao = db.contactoDao()
 
                 // Insertar el nuevo contacto en la base de datos
@@ -50,7 +45,6 @@ class AddContactoActivity : AppCompatActivity() {
                     contactoDao.insertAll(contacto)
                 }.start()
 
-                Toast.makeText(this, "Guardado: $nombre, $telefono", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()

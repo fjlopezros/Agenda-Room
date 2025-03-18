@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.fjlr.room_practica.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -32,11 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Inicializar la base de datos y DAO
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java, "contactos_db"
-        ).build()
-
+        db = DatabaseSingleton.getDatabase(this)
         contactoDao = db.contactoDao()
 
         // Inicializar RecyclerView después de setContentView
