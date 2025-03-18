@@ -55,11 +55,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
-    // - - ViewModel and LiveData (si es necesario)
-    val lifecycle_version = "2.5.0"
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-
     // Otras dependencias de la app
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
