@@ -6,11 +6,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.fjlr.room_practica.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var db: AppDataBase
+    private lateinit var contactoDao: ContactoDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +31,35 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        // Inicializar la base de datos y DAO
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDataBase::class.java, "contactos_db"
+        ).build()
+
+        contactoDao = db.contactoDao()
+
+        // Inicializar RecyclerView después de setContentView
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         addContacto()
-
-
     }
-    private fun addContacto(){
+
+    override fun onResume() {
+        super.onResume()
+
+        // Cargar la lista de contactos desde la base de datos en un hilo de fondo
+        Thread {
+            val listaDeContactos = contactoDao.getAll()  // Recuperar los contactos
+            runOnUiThread {
+                // Asignar el adaptador con la lista actualizada de contactos
+                recyclerView.adapter = ContactoAdapter(listaDeContactos)
+            }
+        }.start()
+    }
+
+    private fun addContacto() {
         binding.btAdd.setOnClickListener {
             val intent = Intent(this, AddContactoActivity::class.java)
             startActivity(intent)

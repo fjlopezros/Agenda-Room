@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.fjlr.room_practica.databinding.ContactosItemBinding
 
-class ContactoAdapter(private val contactos: List<Contacto>) :
+class ContactoAdapter(private val contactos: List<ContactoEntity>) :
     RecyclerView.Adapter<ContactoAdapter.ContactoAdapterViewHolder>() {
 
     inner class ContactoAdapterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ContactosItemBinding.bind(view)
 
-        fun bind(contacto: Contacto) {
+        fun bind(contacto: ContactoEntity) {
             binding.tvNombreContacto.text = contacto.nombre
         }
     }
