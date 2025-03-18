@@ -1,16 +1,24 @@
 package com.fjlr.room_practica
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fjlr.room_practica.databinding.ActivityAddContactoBinding
+import com.fjlr.room_practica.room.AppDataBase
+import com.fjlr.room_practica.room.ContactoDao
+import com.fjlr.room_practica.room.ContactoEntity
+import com.fjlr.room_practica.room.DatabaseSingleton
 
 class AddContactoActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityAddContactoBinding
+    private lateinit var binding: ActivityAddContactoBinding
+    private lateinit var db: AppDataBase
+    private lateinit var contactoDao: ContactoDao
+    private var contactoId: Int = -1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,32 +33,41 @@ class AddContactoActivity : AppCompatActivity() {
             insets
         }
 
-        guardar()
+        db = DatabaseSingleton.getDatabase(this)
+        contactoDao = db.contactoDao()
+
+        // Comprobar si se está editando un contacto
+        contactoId = intent.getIntExtra("CONTACTO_ID", -1)
+        if (contactoId != -1) {
+            binding.etNombre.setText(intent.getStringExtra("CONTACTO_NOMBRE"))
+            binding.etTelefono.setText(intent.getStringExtra("CONTACTO_TELEFONO").toString())
+            binding.btGuardar.text = "Actualizar" // Cambiar el texto del botón
+        }
+
+        guardarContacto()
         cancelar()
 
     }
-    private fun guardar(){
-        binding.btGuardar.setOnClickListener{
-            val nombre = binding.etNombre.text.toString()
-            val telefono = binding.etTelefono.text.toString()
+    private fun guardarContacto() {
+        val nombre = binding.etNombre.text.toString()
+        val telefonoString = binding.etTelefono.text.toString()
 
-            if (nombre.isNotEmpty() && telefono.isNotEmpty()) {
-                // Obtener una instancia de la base de datos y el DAO
-                val db = DatabaseSingleton.getDatabase(this)
-                val contactoDao = db.contactoDao()
+        if (nombre.isNotEmpty() && telefonoString.isNotEmpty()) {
+            val telefono = telefonoString.toIntOrNull() ?: 0
 
-                // Insertar el nuevo contacto en la base de datos
-                val contacto = ContactoEntity(nombre = nombre, telefono = telefono.toInt())
-                Thread {
-                    contactoDao.insertAll(contacto)
-                }.start()
-
-                finish()
-            } else {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
-            }
+            Thread {
+                if (contactoId == -1) {
+                    // Si no hay ID, es un contacto nuevo
+                    contactoDao.insertAll(ContactoEntity(nombre = nombre, telefono = telefono))
+                } else {
+                    // Si hay ID, actualizar el contacto existente
+                    contactoDao.update(ContactoEntity(id = contactoId, nombre = nombre, telefono = telefono))
+                }
+                runOnUiThread { finish() }
+            }.start()
         }
     }
+
     private fun cancelar(){
         binding.btCancelar.setOnClickListener {
             finish()

@@ -1,4 +1,4 @@
-package com.fjlr.room_practica
+package com.fjlr.room_practica.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

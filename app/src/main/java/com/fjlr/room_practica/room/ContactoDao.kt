@@ -1,4 +1,4 @@
-package com.fjlr.room_practica
+package com.fjlr.room_practica.room
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -11,6 +11,9 @@ interface ContactoDao {
     @Query("SELECT * FROM contactos")
     fun getAll(): List<ContactoEntity>
 
+    @Query("SELECT * FROM contactos WHERE id = :contactoId")
+    fun getContactoById(contactoId: Int): ContactoEntity
+
     @Query("SELECT * FROM contactos WHERE nombre LIKE :nombre")
     fun findByName(nombre: String): ContactoEntity?
 
@@ -22,6 +25,9 @@ interface ContactoDao {
 
     @Delete
     fun delete(contacto: ContactoEntity)
+
+    @Query("DELETE FROM contactos WHERE id = :contactoId")
+    fun deleteContactoById(contactoId: Int)
 
     @Update
     fun update(contacto: ContactoEntity)

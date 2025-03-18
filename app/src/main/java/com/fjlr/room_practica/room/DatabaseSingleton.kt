@@ -1,4 +1,4 @@
-package com.fjlr.room_practica
+package com.fjlr.room_practica.room
 
 import android.content.Context
 import androidx.room.Room
