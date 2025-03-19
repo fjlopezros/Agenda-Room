@@ -1,6 +1,5 @@
 package com.fjlr.room_practica
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -39,6 +38,25 @@ class ContactoDetailActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        actualizarDatos()
+    }
+
+    private fun actualizarDatos() {
+        val contactoId = intent.getIntExtra("CONTACTO_ID", -1)
+        if (contactoId != -1) {
+            Thread {
+                val contacto = contactoDao.getContactoById(contactoId)
+                runOnUiThread {
+                    binding.tvNombreContactoDetalle.text = contacto.nombre
+                    binding.tvTelefonoContactoDetalle.text = contacto.telefono.toString()
+                }
+            }.start()
+        }
+    }
+
+
     private fun editar(){
         binding.btEditar.setOnClickListener { editarContacto() }
     }
@@ -48,7 +66,7 @@ class ContactoDetailActivity : AppCompatActivity() {
             intent.putExtra("CONTACTO_ID", contactoId)
             intent.putExtra("CONTACTO_NOMBRE", binding.tvNombreContactoDetalle.text.toString())
             intent.putExtra("CONTACTO_TELEFONO", binding.tvTelefonoContactoDetalle.text.toString().toInt())
-            startActivity(intent)
+        startActivity(intent)
     }
 
     private fun init(){
@@ -61,7 +79,6 @@ class ContactoDetailActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun cargarDatos() {
         Thread {
             val contacto = contactoDao.getContactoById(contactoId)

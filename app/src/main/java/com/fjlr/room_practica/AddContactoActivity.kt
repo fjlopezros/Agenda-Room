@@ -1,7 +1,7 @@
 package com.fjlr.room_practica
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,39 +33,55 @@ class AddContactoActivity : AppCompatActivity() {
             insets
         }
 
-        db = DatabaseSingleton.getDatabase(this)
-        contactoDao = db.contactoDao()
+        init()
+
 
         // Comprobar si se está editando un contacto
         contactoId = intent.getIntExtra("CONTACTO_ID", -1)
         if (contactoId != -1) {
             binding.etNombre.setText(intent.getStringExtra("CONTACTO_NOMBRE"))
-            binding.etTelefono.setText(intent.getStringExtra("CONTACTO_TELEFONO").toString())
+            binding.etTelefono.setText(intent.getIntExtra("CONTACTO_TELEFONO", 0).toString())
             binding.btGuardar.text = "Actualizar" // Cambiar el texto del botón
         }
 
-        guardarContacto()
+        binding.btGuardar.setOnClickListener { guardarContacto() }
         cancelar()
 
     }
+
     private fun guardarContacto() {
-        val nombre = binding.etNombre.text.toString()
-        val telefonoString = binding.etTelefono.text.toString()
+        val nombre = binding.etNombre.text.toString().trim()
+        val telefonoString = binding.etTelefono.text.toString().trim()
 
-        if (nombre.isNotEmpty() && telefonoString.isNotEmpty()) {
-            val telefono = telefonoString.toIntOrNull() ?: 0
-
-            Thread {
-                if (contactoId == -1) {
-                    // Si no hay ID, es un contacto nuevo
-                    contactoDao.insertAll(ContactoEntity(nombre = nombre, telefono = telefono))
-                } else {
-                    // Si hay ID, actualizar el contacto existente
-                    contactoDao.update(ContactoEntity(id = contactoId, nombre = nombre, telefono = telefono))
-                }
-                runOnUiThread { finish() }
-            }.start()
+        if (nombre.isEmpty() || telefonoString.isEmpty()) {
+            Toast.makeText(this, "Faltan datos: Nombre o teléfono vacío", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        val telefono = telefonoString.toIntOrNull()
+        if (telefono == null) {
+            Toast.makeText(this, "Teléfono inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        Thread {
+            if (contactoId == -1) {
+                // Si no hay ID, es un nuevo contacto
+                contactoDao.insertAll(ContactoEntity(nombre = nombre, telefono = telefono))
+            } else {
+                // Si hay ID, actualizar el contacto existente
+                contactoDao.update(ContactoEntity(id = contactoId, nombre = nombre, telefono = telefono))
+            }
+            runOnUiThread {
+                finish() // Cerrar la actividad y volver a MainActivity
+            }
+        }.start()
+    }
+
+
+    private fun init(){
+        db = DatabaseSingleton.getDatabase(this)
+        contactoDao = db.contactoDao()
     }
 
     private fun cancelar(){
