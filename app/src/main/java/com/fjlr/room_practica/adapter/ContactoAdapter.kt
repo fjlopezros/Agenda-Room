@@ -11,7 +11,7 @@ import com.fjlr.room_practica.room.ContactoEntity
 class ContactoAdapter(private val contactos: List<ContactoEntity>, private val fn: (ContactoEntity) -> Unit) :
     RecyclerView.Adapter<ContactoAdapter.ContactoAdapterViewHolder>() {
 
-    inner class ContactoAdapterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+     inner class ContactoAdapterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ContactosItemBinding.bind(view)
 
         fun bind(contacto: ContactoEntity) {
