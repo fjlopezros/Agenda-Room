@@ -43,11 +43,11 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Thread {
-            val listaDeContactos = contactoDao.getAll()  // Recuperar los contactos
+            val listaDeContactos = contactoDao.getAll()
             runOnUiThread {
                 recyclerView.adapter = ContactoAdapter(listaDeContactos) { contacto ->
                     val intent = Intent(this, ContactoDetailActivity::class.java)
-                    intent.putExtra("CONTACTO_ID", contacto.id)  // Pasar ID del contacto
+                    intent.putExtra("CONTACTO_ID", contacto.id)
                     startActivity(intent)
                 }
             }
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        // Inicializar la base de datos y DAO
         db = DatabaseSingleton.getDatabase(this)
         contactoDao = db.contactoDao()
 

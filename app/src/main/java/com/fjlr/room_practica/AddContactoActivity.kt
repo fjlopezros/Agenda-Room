@@ -35,8 +35,6 @@ class AddContactoActivity : AppCompatActivity() {
 
         init()
 
-
-        // Comprobar si se está editando un contacto
         contactoId = intent.getIntExtra("CONTACTO_ID", -1)
         if (contactoId != -1) {
             binding.etNombre.setText(intent.getStringExtra("CONTACTO_NOMBRE"))
@@ -66,14 +64,12 @@ class AddContactoActivity : AppCompatActivity() {
 
         Thread {
             if (contactoId == -1) {
-                // Si no hay ID, es un nuevo contacto
                 contactoDao.insertAll(ContactoEntity(nombre = nombre, telefono = telefono))
             } else {
-                // Si hay ID, actualizar el contacto existente
                 contactoDao.update(ContactoEntity(id = contactoId, nombre = nombre, telefono = telefono))
             }
             runOnUiThread {
-                finish() // Cerrar la actividad y volver a MainActivity
+                finish()
             }
         }.start()
     }
