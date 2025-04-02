@@ -7,57 +7,52 @@
     android:layout_height="match_parent"
     tools:context=".ContactoDetailActivity">
 
-    <ImageView
-        android:id="@+id/ivFotoContactoDetalle"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:contentDescription="@string/imagen_del_contacto_seleccionado"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvNombreContactoDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivFotoContactoDetalle"
-        tools:hint="@string/nombreContacto" />
 
     <TextView
         android:id="@+id/tvTelefonoContactoDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNombreContactoDetalle"
         tools:hint="@string/telefonoContacto" />
 
+    <TextView
+        android:id="@+id/tvNombreContactoDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="284dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:hint="@string/nombreContacto" />
+
     <Button
         android:id="@+id/btVolver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="36dp"
         android:text="@string/volver"
         app:layout_constraintBottom_toTopOf="@+id/tvNombreContactoDetalle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <Button
         android:id="@+id/btEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="196dp"
         android:text="@string/editar"
         app:layout_constraintBottom_toTopOf="@+id/tvNombreContactoDetalle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.926"
+        app:layout_constraintHorizontal_bias="0.993"
         app:layout_constraintStart_toEndOf="@+id/btVolver"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btEliminar"
